@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="CSS/style.css" rel="stylesheet">
+    <title>YeahBuddy!</title>
+</head>
+<body>
+    <header class="header">
+        <h1 class="header__title">ToDo List</h1>
+        <nav class="header__nav"><a href="index.html">General</a> <a href="scoreboard.html">PRScoreboard</a> <a href="achievements.html">Achievements</a> <a href="resources.html">Resources</a> <a href="profile.html">Profile</a> <a href="todo.html" class="active">ToDoList</a></nav>
+    </header>
+    <main class="body">
+        <div class="container">
+            <div class="todo">
+                <h2>ToDo List</h2>
+                <div class="row">
+                    <input id="input-box" type="text" placeholder="Type your task" onkeydown="checkEnter(event)">
+                    <button onclick="addTask()">Add task</button>
+                </div>
+                <ul class="todoList" id="list-container">
+                    <!-- <li class="checked"></li>
+                    <li></li>
+                    <li></li> -->
+                </ul>
+            </div>
+        </div>
+    </main>
+    <script src="JS/todoList.js"></script>
+    <footer>
+    </footer>
+  </body>
+</html>
