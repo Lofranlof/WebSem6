@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html>
+
   <head>
-    <title>Personal Records Scoreboard</title>
-    <link rel="stylesheet" href="CSS/style.css">
-    <script src="JS/timeToLoad.js"></script>
+    {{> styleMetaTitle}}
     <script src="JS/records.js"></script>
   </head>
+
   <body>
-    <header class="header">
-        <h1 class="header__title">Scoreboard</h1>
-        <nav class="header__nav"><a href="index.html">General</a> <a href="scoreboard.html" class="active">PRScoreboard</a> <a href="achievements.html">Achievements</a> <a href="resources.html">Resources</a> <a href="profile.html">Profile</a> <a href="todo.html">ToDoList</a></nav>
-    </header>
+
+    {{> header}}
+
     <main>
         <section class="main_section">
           <h2>Toughest mf'ers out there </h2>
@@ -34,7 +31,9 @@
           </div>
       </section>
     </main>
+
     <footer>
+      {{> timeToLoad}}
     </footer>
+
   </body>
-</html>

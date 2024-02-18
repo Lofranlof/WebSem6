@@ -1,18 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <link href="CSS/style.css" rel="stylesheet">
-    <script src="JS/timeToLoad.js"></script>
-    <title>YeahBuddy!</title>
+    {{> styleMetaTitle}}
 </head>
 
 <body>
-    <header class="header">
-        <h1 class="header__title">Welcome to YeahBuddy!</h1>
-        <nav class="header__nav"><a href="index.html" class="active">General</a> <a href="scoreboard.html">PRScoreboard</a> <a href="achievements.html">Achievements</a> <a href="resources.html">Resources</a> <a href="profile.html">Profile</a> <a href="todo.html">ToDoList</a></nav>
-    </header>
+
+    {{> header }}
+
     <main class="body">
         <section class="body__section">
             <h3 class="body__section__title">About the YeahBuddy! project:</h3>
@@ -63,6 +56,7 @@
             
         </section>
     </main>
+
     <footer class="footer">
         <pre class="footer__quote">
             ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡐⠈⠉⠁⢢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -103,7 +97,7 @@
         <a href="https://t.me/Lofranlof" target="_blank" class="footer__link">
             <img class="icon" src="IMG/literallyme.jpg" alt="tg" />
         </a>
+        {{>timeToLoad}}
     </footer>
-</body>
 
-</html>
+</body>

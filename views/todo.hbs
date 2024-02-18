@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <link href="CSS/style.css" rel="stylesheet">
-    <title>YeahBuddy!</title>
+    {{>styleMetaTitle}}
 </head>
+
 <body>
-    <header class="header">
-        <h1 class="header__title">ToDo List</h1>
-        <nav class="header__nav"><a href="index.html">General</a> <a href="scoreboard.html">PRScoreboard</a> <a href="achievements.html">Achievements</a> <a href="resources.html">Resources</a> <a href="profile.html">Profile</a> <a href="todo.html" class="active">ToDoList</a></nav>
-    </header>
+    {{> header}}
     <main class="body">
         <div class="container">
             <div class="todo">
@@ -27,8 +21,10 @@
             </div>
         </div>
     </main>
-    <script src="JS/todoList.js"></script>
+
     <footer>
+        <script src="JS/todoList.js"></script>
+        {{> timeToLoad}}
     </footer>
+
   </body>
-</html>

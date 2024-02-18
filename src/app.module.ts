@@ -5,13 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-// @Module({
-//   imports: [ConfigModule.forRoot()],
-//   controllers: [AppController],
-//   providers: [AppService],
-// })
-// export class AppModule {}
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
