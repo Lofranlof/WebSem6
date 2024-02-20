@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as hbs from 'express-handlebars'
+import { LoggingInterceptor } from './interceptors/app.interceptors';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(join(__dirname, '..', 'public'));
@@ -14,6 +15,7 @@ async function bootstrap() {
     defaultLayout: 'main',
     layoutsDir: join(__dirname, '..', 'views/layouts'),
     }));
+  app.useGlobalInterceptors(new LoggingInterceptor())
   await app.listen(process.env.PORT || 34918);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

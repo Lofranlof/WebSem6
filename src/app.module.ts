@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './interceptors/app.interceptors';
 
 @Module({
   imports: [
@@ -13,6 +15,10 @@ import { join } from 'path';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },],
 })
 export class AppModule {}

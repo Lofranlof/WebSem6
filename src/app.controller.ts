@@ -10,11 +10,13 @@ export class AppController {
 
   @Get()
   getIndex(@Res() res: Response) {
+    const serverProcessingTime = res.get('X-Server-Processing-Time');
     return res.render('index', {
       headerText: 'Welcome to YeahBuddy!',
       title: 'General',
       isGeneral: true,
-      isLoggedIn: testLogin
+      isLoggedIn: testLogin,
+      serverProcessingTime
     })
   }
 
