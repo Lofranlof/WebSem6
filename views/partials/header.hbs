@@ -5,7 +5,11 @@
         <a href="scoreboard" class="">PRScoreboard</a>
         <a href="achievements" class="">Achievements</a>
         <a href="resources" class="">Resources</a>
+        <a href="todo" class="">ToDoList</a>
+      {{#if isLoggedIn}}
         <a href="profile" class="">Profile</a>
-        <a href="todo" class="">ToDoList</a
-    </nav>
+      {{else}}
+        <a href="login" class="">Login</a>
+      {{/if}}
+      </nav>
 </header>

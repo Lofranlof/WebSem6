@@ -2,7 +2,7 @@ import { Controller, Get, Res, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
 
-var testLogin = false
+const testLogin = false;
 
 @Controller()
 export class AppController {
@@ -14,7 +14,7 @@ export class AppController {
       headerText: 'Welcome to YeahBuddy!',
       title: 'General',
       isLoggedIn: testLogin,
-    })
+    });
   }
 
   @Get('achievements')
@@ -22,8 +22,8 @@ export class AppController {
     return res.render('achievements', {
       headerText: 'Achievements',
       title: 'Achievements',
-      isLoggedIn: testLogin
-    })
+      isLoggedIn: testLogin,
+    });
   }
 
   @Get('profile')
