@@ -10,13 +10,10 @@ export class AppController {
 
   @Get()
   getIndex(@Res() res: Response) {
-    const serverProcessingTime = res.get('X-Server-Processing-Time');
     return res.render('index', {
       headerText: 'Welcome to YeahBuddy!',
       title: 'General',
-      isGeneral: true,
       isLoggedIn: testLogin,
-      serverProcessingTime
     })
   }
 
@@ -25,7 +22,6 @@ export class AppController {
     return res.render('achievements', {
       headerText: 'Achievements',
       title: 'Achievements',
-      isAchievements: true,
       isLoggedIn: testLogin
     })
   }
@@ -35,7 +31,6 @@ export class AppController {
     return res.render('profile', {
       headerText: 'Profile',
       title: 'Profile',
-      isProfile: true,
       isLoggedIn: true
     })
   }
@@ -45,7 +40,6 @@ export class AppController {
     return res.render('scoreboard', {
       headerText: 'Scoreboard',
       title: 'Scoreboard',
-      isScoreboard: true,
       isLoggedIn: testLogin
     })
   }
@@ -55,7 +49,6 @@ export class AppController {
     return res.render('todo', {
       headerText: 'ToDo List',
       title: 'ToDo',
-      isList: true,
       isLoggedIn: testLogin
     })
   }
@@ -65,7 +58,6 @@ export class AppController {
     return res.render('resources', {
       headerText: 'Resources',
       title: 'Resources',
-      isResources: true,
       isLoggedIn: testLogin
     })
   }
@@ -75,7 +67,6 @@ export class AppController {
     return res.render('login', {
       headerText: 'Login',
       title: 'login',
-      isLogin: true,
       isLoggedIn: false
     })
   }

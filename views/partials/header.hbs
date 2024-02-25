@@ -1,49 +1,11 @@
 <header class="header">
     <h1 class="header__title">{{headerText}}</h1>
     <nav class="header__nav">
-        {{#if isGeneral}}
-            <a href="../" class="active">General</a>
-        {{else}}
-            <a href="../">General</a>
-        {{/if}}
-
-        {{#if isScoreboard}}
-            <a href="scoreboard" class="active">PRScoreboard</a>
-        {{else}}
-            <a href="scoreboard">PRScoreboard</a>
-        {{/if}}
-
-        {{#if isAchievements}}
-            <a href="achievements" class="active">Achievements</a>
-        {{else}}
-            <a href="achievements">Achievements</a>
-        {{/if}}
-
-        {{#if isResources}}
-            <a href="resources" class="active">Resources</a>
-        {{else}}
-            <a href="resources">Resources</a>
-        {{/if}}
-
-        {{#if isList}}
-            <a href="todo" class="active">ToDoList</a>
-        {{else}}
-            <a href="todo">ToDoList</a>
-        {{/if}}
-
-        {{#if isLoggedIn}}
-            {{#if isProfile}}
-                <a href="profile" class="active">Profile</a>
-            {{else}}
-                <a href="profile">Profile</a>
-            {{/if}}
-        {{else}}
-            {{#if isLogin}}
-                <a href="login" class="active">Login</a>
-            {{else}}
-                <a href="login">Login</a>
-            {{/if}}
-        {{/if}}
-
+        <a href="/" class="">General</a>
+        <a href="scoreboard" class="">PRScoreboard</a>
+        <a href="achievements" class="">Achievements</a>
+        <a href="resources" class="">Resources</a>
+        <a href="profile" class="">Profile</a>
+        <a href="todo" class="">ToDoList</a
     </nav>
 </header>

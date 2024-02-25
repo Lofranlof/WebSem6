@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('load', function() {
         var loadTime = performance.now();
@@ -13,15 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    var menuItems = document.querySelectorAll('a');
-    var currentPage = document.location.pathname;
-
-    menuItems.forEach(function(item) {
-        var itemPath = item.getAttribute('href');
-
-        if (currentPage === itemPath) {
-            item.classList.add('active');
+document.addEventListener("DOMContentLoaded", function() {
+    const menu = document.querySelector(".header__nav");
+    const directChildren = menu.querySelectorAll("a");
+    const currentPage = document.location.href;
+    directChildren.forEach(function(item) {
+        if (item.href === currentPage) {
+            item.classList.add("active");
         }
     });
 });
