@@ -15,10 +15,10 @@ datasource db {
 
 model User {
   id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  Records Record[]
-  Achievements Achievement[]
+  name  String
+  records Record[]
+  achievements Achievement[]
+  registerDate DateTime   @default(now())
 }
 
 model Record {
@@ -28,12 +28,38 @@ model Record {
   published Boolean? @default(false)
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
-  // date
+  createdAt  DateTime   @default(now())
+  stats Statistics?
+  statId Int?
 }
 
 model Achievement {
   id        Int      @default(autoincrement()) @id
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
-  // date
+  achievedAt  DateTime   @default(now())
+  type Type
+}
+
+model Statistics {
+  id Int @default(autoincrement()) @id
+  record Record   @relation(fields: [recordId], references: [id])
+  recordId Int @unique
+  becnhPress Int
+  deadLift Int
+  squat Int
+}
+
+enum Type {
+  Noob
+  Amateur
+  Pro
+  Swolelvl1
+  Swolelvl2
+  Cut
+  Ripped
+  Yoked
+  Jacked
+  Shredded
+  AbsoluteUnit
 }
