@@ -1,0 +1,15 @@
+<header class="header">
+    <h1 class="header__title">{{headerText}}</h1>
+    <nav class="header__nav">
+        <a href="/" class="">General</a>
+        <a href="scoreboard" class="">PRScoreboard</a>
+        <a href="achievements" class="">Achievements</a>
+        <a href="resources" class="">Resources</a>
+        <a href="todo" class="">ToDoList</a>
+      {{#if isLoggedIn}}
+        <a href="profile" class="">Profile</a>
+      {{else}}
+        <a href="login" class="">Login</a>
+      {{/if}}
+      </nav>
+</header>

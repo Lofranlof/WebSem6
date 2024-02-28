@@ -1,0 +1,30 @@
+  <head>
+    {{> styleMetaTitle}} 
+  </head>
+
+  <body>
+    {{> header}}
+    <main class="body">
+        <div id="error"></div>
+        <div class="container">
+            <div class="todo">
+                <form id="form" action="/profile" method="GET">
+                    <div class="row">
+                        <label for="name">Name</label>
+                        <input id="input-box" type="text" placeholder="Type your name" onkeydown="checkEnter(event)">
+                    </div>
+                    <div class="row">
+                        <label for="password">Password</label>
+                        <input id="input-box" type="text" placeholder="Type your password" onkeydown="checkEnter(event)">
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+      {{> timeToLoad}}
+    </footer>
+
+  </body>

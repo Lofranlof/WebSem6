@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+
   <head>
-    <meta charset="UTF-8"/>
-    <title>Achievements</title>
-    <link rel="stylesheet" href="CSS/style.css">
-    <script src="JS/timeToLoad.js"></script>
+    {{> styleMetaTitle }}
     <script src="JS/swiper.js"></script>
         <!-- Meta viewport for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
@@ -50,11 +46,11 @@
       }
     </style>
   </head>
+
   <body>
-    <header class="header">
-      <h1 class="header__title">Achievements</h1>
-      <nav class="header__nav"><a href="index.html">General</a> <a href="scoreboard.html">PRScoreboard</a> <a href="achievements.html" class="active">Achievements</a> <a href="resources.html">Resources</a> <a href="profile.html">Profile</a> <a href="todo.html">ToDoList</a></nav>
-  </header>
+
+    {{> header}}
+
     <main class="body">
       <!-- Swiper carousel container -->
       <div class="swiper mySwiper">
@@ -118,11 +114,13 @@
       </audio>
       <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     </main>
+
     <footer class="footer">
       <section>
         Inspired by:
         <a href="https://github.com/RomanKosovets" target="_blank" class="footer__link">Roma</a>
       </section>
+     {{> timeToLoad}}
     </footer>
+    
   </body>
-</html>
