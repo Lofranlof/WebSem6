@@ -28,7 +28,7 @@ model Record {
   published Boolean? @default(false)
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
-  createdAt  DateTime   @default(now())
+  createdAt DateTime @default(now())
   stats Statistics?
   statId Int?
 }
@@ -38,7 +38,8 @@ model Achievement {
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
   achievedAt  DateTime   @default(now())
-  type Type
+  type Type @relation(fields: [typeID], references: [id])
+  typeID Int @unique
 }
 
 model Statistics {
@@ -50,16 +51,8 @@ model Statistics {
   squat Int
 }
 
-enum Type {
-  Noob
-  Amateur
-  Pro
-  Swolelvl1
-  Swolelvl2
-  Cut
-  Ripped
-  Yoked
-  Jacked
-  Shredded
-  AbsoluteUnit
+model Type {
+  id Int @default(autoincrement()) @id
+  title String
+  achievement Achievement?
 }
