@@ -1,8 +1,8 @@
-import { Controller, Get, Res, Render } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
 
-var testLogin = false
+const testLogin = false;
 
 @Controller()
 export class AppController {
@@ -14,7 +14,7 @@ export class AppController {
       headerText: 'Welcome to YeahBuddy!',
       title: 'General',
       isLoggedIn: testLogin,
-    })
+    });
   }
 
   @Get('achievements')
@@ -22,8 +22,8 @@ export class AppController {
     return res.render('achievements', {
       headerText: 'Achievements',
       title: 'Achievements',
-      isLoggedIn: testLogin
-    })
+      isLoggedIn: testLogin,
+    });
   }
 
   @Get('profile')
@@ -31,8 +31,8 @@ export class AppController {
     return res.render('profile', {
       headerText: 'Profile',
       title: 'Profile',
-      isLoggedIn: true
-    })
+      isLoggedIn: true,
+    });
   }
 
   @Get('scoreboard')
@@ -40,8 +40,8 @@ export class AppController {
     return res.render('scoreboard', {
       headerText: 'Scoreboard',
       title: 'Scoreboard',
-      isLoggedIn: testLogin
-    })
+      isLoggedIn: testLogin,
+    });
   }
 
   @Get('todo')
@@ -49,8 +49,8 @@ export class AppController {
     return res.render('todo', {
       headerText: 'ToDo List',
       title: 'ToDo',
-      isLoggedIn: testLogin
-    })
+      isLoggedIn: testLogin,
+    });
   }
 
   @Get('resources')
@@ -58,8 +58,8 @@ export class AppController {
     return res.render('resources', {
       headerText: 'Resources',
       title: 'Resources',
-      isLoggedIn: testLogin
-    })
+      isLoggedIn: testLogin,
+    });
   }
 
   @Get('login')
@@ -67,7 +67,7 @@ export class AppController {
     return res.render('login', {
       headerText: 'Login',
       title: 'login',
-      isLoggedIn: false
-    })
+      isLoggedIn: false,
+    });
   }
 }

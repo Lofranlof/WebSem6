@@ -56,3 +56,5 @@ model Type {
   title String
   achievement Achievement?
 }
+
+// Спросить как лучше сделать тренера, менеджера
