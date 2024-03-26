@@ -4,6 +4,7 @@ import {
   IsDate,
   ValidateNested,
   ArrayNotEmpty,
+  IsNotEmpty,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { RecordDTO } from '../../record/dto/create-record.dto';
@@ -14,6 +15,7 @@ export class UserDTO {
   id: number;
 
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @ArrayNotEmpty()

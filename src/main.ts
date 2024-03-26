@@ -4,7 +4,8 @@ import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as hbs from 'express-handlebars';
 import { LoggingInterceptor } from './app/app.interceptors';
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {ValidationPipe} from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -26,6 +27,7 @@ async function bootstrap() {
     .setDescription('Lab 4, creating api documentation usign swagger')
     .setVersion('0.1')
     .build();
+  app.useGlobalPipes(new ValidationPipe());
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   await app.listen(process.env.PORT || 34918);

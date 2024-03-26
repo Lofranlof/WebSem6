@@ -1,9 +1,12 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import { UserDTO } from './dto/create-user.dto';
+import { PrismaService } from '../prisma.service';
+import { User, Prisma } from '@prisma/client'
 @Injectable()
 export class UserService {
+  constructor(private prisma: PrismaService) {}
   getAllUsers() {
-    throw new NotImplementedException();
+    return this.prisma.user.findMany();
   }
 
   getUserByID(id: number) {
@@ -11,7 +14,12 @@ export class UserService {
   }
 
   createUser(user: UserDTO) {
-    throw new NotImplementedException(user);
+    return this.prisma.user.create({
+      name: user.name,
+      records: user.records,
+      achievements: user.achievements,
+      registerDate: user.registerDate,
+    });
   }
 
   deleteUser(id: number) {
