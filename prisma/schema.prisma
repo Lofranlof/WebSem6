@@ -12,3 +12,47 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id    Int     @default(autoincrement()) @id
+  name  String
+  records Record[]
+  achievements Achievement[]
+  registerDate DateTime   @default(now())
+}
+
+model Record {
+  id        Int      @default(autoincrement()) @id
+  title     String
+  content   String?
+  published Boolean? @default(false)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  createdAt DateTime @default(now())
+  stats Statistics?
+  statId Int?
+}
+
+model Achievement {
+  id        Int      @default(autoincrement()) @id
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  achievedAt  DateTime   @default(now())
+  type Type @relation(fields: [typeID], references: [id])
+  typeID Int @unique
+}
+
+model Statistics {
+  id Int @default(autoincrement()) @id
+  record Record   @relation(fields: [recordId], references: [id])
+  recordId Int @unique
+  becnhPress Int
+  deadLift Int
+  squat Int
+}
+
+model Type {
+  id Int @default(autoincrement()) @id
+  title String
+  achievement Achievement?
+}

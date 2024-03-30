@@ -16,5 +16,5 @@ export class LoggingInterceptor implements NestInterceptor {
             res.header('Server-Timing', `serverdur=${elapsed}`);
         }),
       );
-  }
+  }  
 }
