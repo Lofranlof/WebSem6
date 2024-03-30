@@ -15,10 +15,12 @@ export class UserService {
 
   createUser(user: UserDTO) {
     return this.prisma.user.create({
-      name: user.name,
-      records: user.records,
-      achievements: user.achievements,
-      registerDate: user.registerDate,
+      data: {
+        name: user.name,
+        records: user.records,
+        achievements: user.achievements,
+        registerDate: user.registerDate,
+      }
     });
   }
 
