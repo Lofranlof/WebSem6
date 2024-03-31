@@ -7,7 +7,7 @@ export class AchievementService {
     throw new NotImplementedException();
   }
 
-  getAchievementsByUserID(id: number) {
+  getAchievementsByID(id: number) {
     throw new NotImplementedException(id);
   }
 
@@ -17,5 +17,9 @@ export class AchievementService {
 
   deleteAchievement(id: number) {
     throw new NotImplementedException(id);
+  }
+
+  updateAchievement(achievement: AchievementDTO) {
+    throw new NotImplementedException(achievement)
   }
 }

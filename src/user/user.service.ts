@@ -17,4 +17,8 @@ export class UserService {
   deleteUser(id: number) {
     throw new NotImplementedException(id);
   }
+
+  updateUser(user: UserDTO) {
+    throw new NotImplementedException(user);
+  }
 }

@@ -18,4 +18,8 @@ export class TypeService {
   deleteType(name: string) {
     throw new NotImplementedException(name);
   }
+
+  updateType(type: TypeDTO) {
+    throw new NotImplementedException((type))
+  }
 }
