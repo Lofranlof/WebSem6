@@ -3,7 +3,7 @@ import { RecordDTO } from './dto/create-record.dto';
 
 @Injectable()
 export class RecordService {
-  getRecordsByUserID(id: number) {
+  getRecordsByID(id: number) {
     throw new NotImplementedException(id);
   }
 

@@ -3,7 +3,7 @@ import { StatisticsDTO } from "./dto/create-statistics.dto";
 
 @Injectable()
 export class StatisticsService {
-  getStatisticsByRecordID(id: number) {
+  getStatisticsByID(id: number) {
     throw new NotImplementedException(id);
   }
 
@@ -11,7 +11,7 @@ export class StatisticsService {
     throw new NotImplementedException(statistics);
   }
 
-  deleteStatisticsByRecordID(id: number) {
+  deleteStatisticsByID(id: number) {
     throw new NotImplementedException(id);
   }
 }
