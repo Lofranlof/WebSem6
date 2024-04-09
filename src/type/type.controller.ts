@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch, Query, ParseIntPipe } from "@nestjs/common";
 import { TypeService } from './type.service';
-import { TypeDTO } from './dto/create-type.dto';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { UserDTO } from "../user/dto/create-user.dto";
+import { CreateTypeDTO } from './dto/create-type.dto';
+import { UpdateTypeDTO } from './dto/update-type.dto';
+
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { PaginationParamsDto } from "../common/dto/pagination.dto";
 
 @ApiBearerAuth()
 @ApiTags('type')
@@ -10,6 +12,8 @@ import { UserDTO } from "../user/dto/create-user.dto";
 export default class TypeController {
   constructor(private readonly typeService: TypeService) {}
   @ApiOperation({ summary: "Get all types" })
+  @ApiQuery({ name: 'offset', type: 'number'})
+  @ApiQuery({ name: 'limit', type: 'number'})
   @ApiResponse({
     status: 200,
     description: "All types have been fetched"
@@ -19,12 +23,16 @@ export default class TypeController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Get()
-  getAllTypes() {
-    return this.typeService.getAllTypes();
+  getAllTypes(@Query() { offset, limit }: PaginationParamsDto) {
+    return this.typeService.getAllTypes(offset, limit);
   }
   @ApiOperation({ summary: "Get type by name" })
   @ApiParam({name: "name", type: "string", required: true})
@@ -37,12 +45,16 @@ export default class TypeController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
-  @Get(':name')
-  getTypeByName(@Param('name') name: string) {
-    return this.typeService.getTypeByName(name);
+  @Get(':id')
+  getTypeById(@Param('id', ParseIntPipe) id: number) {
+    return this.typeService.getTypeById(id);
   }
   @ApiOperation({ summary: "Create a new type" })
   @ApiResponse({
@@ -54,11 +66,15 @@ export default class TypeController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Post()
-  async createType(@Body() type: TypeDTO) {
+  async createType(@Body() type: CreateTypeDTO) {
     return this.typeService.createType(type);
   }
 
@@ -73,12 +89,16 @@ export default class TypeController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
-  @Patch(':name')
-  updateUser(@Param('name') name: string, @Body() type: TypeDTO) {
-    return this.typeService.updateType(type);
+  @Patch(':id')
+  updateType(@Param('id', ParseIntPipe) id: number, @Body() type: UpdateTypeDTO) {
+    return this.typeService.updateType(id, type);
   }
 
   @ApiOperation({ summary: "Delete the type" })
@@ -92,11 +112,15 @@ export default class TypeController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
-  @Delete(':name')
-  async deleteType(@Param('name') name: string) {
-    this.typeService.deleteType(name);
+  @Delete(':id')
+  async deleteType(@Param('id', ParseIntPipe) id: number) {
+    this.typeService.deleteType(id);
   }
 }

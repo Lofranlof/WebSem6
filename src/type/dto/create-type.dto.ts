@@ -2,7 +2,7 @@ import { IsInt, IsString, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { AchievementDTO } from '../../achievement/dto/create-achievement.dto';
 
-export class TypeDTO {
+export class CreateTypeDTO {
   @IsInt()
   id: number;
 

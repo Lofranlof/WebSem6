@@ -1,7 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Post , Patch} from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Patch,
+  ParseIntPipe,
+  NotFoundException,
+  Query
+} from "@nestjs/common";
 import { UserService } from './user.service';
-import { UserDTO } from './dto/create-user.dto';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { CreateUserDTO } from './dto/create-user.dto';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { UpdateUserDTO } from "./dto/update-user.dto";
+import { PaginationParamsDto } from "../common/dto/pagination.dto";
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -10,6 +23,9 @@ export default class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: "Get all users" })
+  @ApiQuery({ name: 'offset', type: 'number'})
+  @ApiQuery({ name: 'limit', type: 'number'})
+
   @ApiResponse({
     status: 200,
     description: "All users have been fetched"
@@ -19,16 +35,19 @@ export default class UserController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Get()
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  async getAllUsers(@Query() { offset, limit }: PaginationParamsDto) {
+    return this.userService.getAllUsers(offset, limit);
   }
 
   @ApiOperation({ summary: "Get user by ID" })
-  @ApiParam({name: "id", type: "integer", required: true})
   @ApiResponse({
     status: 200,
     description: "User has been fetched"
@@ -38,12 +57,24 @@ export default class UserController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
+  @ApiResponse({
+    status: 404,
+    description: "Not Found"
+  })
   @Get(':id')
-  getUserByID(@Param('id') id: number) {
-    return this.userService.getUserByID(id);
+  async getUserByID(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.userService.getUserByID(id);
+    if (!user) {
+      throw new NotFoundException(`User with ${id} does not exist!`);
+    }
+    return user;
   }
   @ApiOperation({ summary: "Create new user" })
   @ApiResponse({
@@ -55,16 +86,19 @@ export default class UserController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Post()
-  createUser(@Body() user: UserDTO) {
+  async createUser(@Body() user: CreateUserDTO) {
     return this.userService.createUser(user);
   }
 
   @ApiOperation({ summary: "Update the user information" })
-  @ApiParam({name: "id", type: "integer", required: true})
   @ApiResponse({
     status: 200,
     description: "User information has been updated successfully"
@@ -74,16 +108,19 @@ export default class UserController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Patch(':id')
-  updateUser(@Param('id') id: number, @Body()user: UserDTO) {
-    return this.userService.updateUser(user);
+  async updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDTO: UpdateUserDTO) {
+    return this.userService.updateUser(id, updateUserDTO);
   }
 
   @ApiOperation({ summary: "Delete the user" })
-  @ApiParam({name: "id", type: "integer", required: true})
   @ApiResponse({
     status: 200,
     description: "User has been deleted successfully"
@@ -93,11 +130,15 @@ export default class UserController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Delete(':id')
-  deleteUser(@Param('id') id: number) {
-    this.userService.deleteUser(id);
+  async deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.deleteUser(id);
   }
 }

@@ -7,10 +7,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UserDTO } from '../../user/dto/create-user.dto';
-import { StatisticsDTO } from '../../statistics/dto/create-statistics.dto';
+import { CreateUserDTO } from '../../user/dto/create-user.dto';
+import { CreateStatisticsDTO } from '../../statistics/dto/create-statistics.dto';
 
-export class RecordDTO {
+export class CreateRecordDTO {
   @IsInt()
   id: number;
 
@@ -18,17 +18,9 @@ export class RecordDTO {
   title: string;
 
   @IsOptional()
-  @IsString()
-  content?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  published?: boolean;
-
-  @IsOptional()
   @ValidateNested()
-  @Type(() => UserDTO)
-  author?: UserDTO;
+  @Type(() => CreateUserDTO)
+  author?: CreateUserDTO;
 
   @IsOptional()
   @IsInt()
@@ -39,8 +31,8 @@ export class RecordDTO {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => StatisticsDTO)
-  stats?: StatisticsDTO;
+  @Type(() => CreateStatisticsDTO)
+  stats?: CreateStatisticsDTO;
 
   @IsOptional()
   @IsInt()

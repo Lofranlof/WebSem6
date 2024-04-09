@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch, Query } from "@nestjs/common";
 import { AchievementService } from './achievement.service';
-import { AchievementDTO } from './dto/create-achievement.dto';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { CreateAchievementDTO } from './dto/create-achievement.dto';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { PaginationParamsDto } from "../common/dto/pagination.dto";
+import { UpdateAchievementDTO } from "./dto/update-achievement.dto";
 
 @ApiBearerAuth()
 @ApiTags('achievement')
@@ -9,6 +11,8 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@ne
 export default class AchievementController {
   constructor(private readonly achievementService: AchievementService) {}
   @ApiOperation({ summary: "Get all achievements" })
+  @ApiQuery({ name: 'offset', type: 'number'})
+  @ApiQuery({ name: 'limit', type: 'number'})
   @ApiResponse({
     status: 200,
     description: "All achievements have been fetched"
@@ -18,11 +22,15 @@ export default class AchievementController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Get()
-  getAllAchievements() {
+  getAllAchievements(@Query() { offset, limit }: PaginationParamsDto) {
     return this.achievementService.getAllAchievements();
   }
 
@@ -35,6 +43,10 @@ export default class AchievementController {
   @ApiResponse({
     status: 403,
     description: "Forbidden."
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad request"
   })
   @ApiResponse({
     status: 500,
@@ -55,11 +67,15 @@ export default class AchievementController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Post()
-  async createAchievement(@Body() achievement: AchievementDTO) {
+  async createAchievement(@Body() achievement: CreateAchievementDTO) {
     return this.achievementService.createAchievement(achievement);
   }
 
@@ -74,11 +90,15 @@ export default class AchievementController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Patch(':id')
-  updateAchievement(@Body() achievement: AchievementDTO) {
+  updateAchievement(@Body() achievement: UpdateAchievementDTO) {
     return this.achievementService.updateAchievement(achievement)
   }
 
@@ -91,6 +111,10 @@ export default class AchievementController {
   @ApiResponse({
     status: 403,
     description: "Forbidden."
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad request"
   })
   @ApiResponse({
     status: 500,

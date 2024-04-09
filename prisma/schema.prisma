@@ -15,17 +15,17 @@ datasource db {
 
 model User {
   id    Int     @default(autoincrement()) @id
-  name  String
+  name  String  @unique
   records Record[]
+  password String
+  email String @unique
   achievements Achievement[]
   registerDate DateTime   @default(now())
 }
 
 model Record {
   id        Int      @default(autoincrement()) @id
-  title     String
-  content   String?
-  published Boolean? @default(false)
+  title     String   @unique
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
   createdAt DateTime @default(now())
@@ -53,6 +53,6 @@ model Statistics {
 
 model Type {
   id Int @default(autoincrement()) @id
-  title String
+  title String @unique
   achievement Achievement?
 }

@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     try {
         const fetchString = (Math.floor(Math.random() * 2) === 0 )
-        ? 'https://my-json-server.typicode.com/Lofranlof/MockRESTAPI/champions?benchPress_gte=130'
-        : 'https://my-json-server.typicode.com/Lofranlof/MockRESTAPI/champions?deadlift_gte=180' ;
+        ? 'http://localhost:3000/user?limit=2'
+        : 'http://localhost:3000/user?limit=5' ;
 
         preloaderContainer.style.display = 'flex';
         const response = await fetch(fetchString);
@@ -20,16 +20,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             const userCardTemplate = document.getElementById('user_card_template');
             users.forEach(user => {
                 const userCard = document.importNode(userCardTemplate.content, true);
-                userCard.querySelector('.user_info.nickname').textContent = `Nickname: ${user.nickname}`;
-                userCard.querySelector('.user_info.date').textContent = `Date of the record: ${user.date}`;
-                userCard.querySelector('.user_info.wellbeing').textContent = `Wellbeing: ${user.wellBeing}`;
-                userCard.querySelector('.user_info.benchpress').textContent = `Bench Press: ${user.benchPress} kg`;
-                userCard.querySelector('.user_info.squat').textContent = `Squat: ${user.squat} kg`;
-                userCard.querySelector('.user_info.deadlift').textContent = `Deadlift: ${user.deadlift} kg`;
+                userCard.querySelector('.user_info.nickname').textContent = `Name: ${user.name}`;
+                userCard.querySelector('.user_info.date').textContent = `Date of the registration: ${user.registerDate}`;
+                // userCard.querySelector('.user_info.benchpress').textContent = `Bench Press: ${user.benchPress} kg`;
+                // userCard.querySelector('.user_info.squat').textContent = `Squat: ${user.squat} kg`;
+                // userCard.querySelector('.user_info.deadlift').textContent = `Deadlift: ${user.deadlift} kg`;
                 userCardsContainer.appendChild(userCard);
             });
         } else {
-            throw new Error('Network response Error');
+            throw new Error(response.json());
         }
     } catch (error) {
         preloaderContainer.style.display = 'none';

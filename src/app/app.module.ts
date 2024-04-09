@@ -11,6 +11,7 @@ import { AchievementModule } from '../achievement/achievement.module';
 import { RecordModule } from '../record/record.module';
 import { StatisticsModule } from '../statistics/statistics.module';
 import { TypeModule } from '../type/type.module';
+import { PrismaModule } from "../prisma/prisma.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TypeModule } from '../type/type.module';
     RecordModule,
     StatisticsModule,
     TypeModule,
+    PrismaModule
   ],
   controllers: [AppController],
   providers: [

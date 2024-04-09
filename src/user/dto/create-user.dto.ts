@@ -3,31 +3,43 @@ import {
   IsString,
   IsDate,
   ValidateNested,
-  ArrayNotEmpty,
-  IsNotEmpty,
-} from 'class-validator';
-import { Type } from 'class-transformer';
-import { RecordDTO } from '../../record/dto/create-record.dto';
-import { AchievementDTO } from '../../achievement/dto/create-achievement.dto';
+  IsNotEmpty, IsOptional, IsEmail, MinLength
+} from "class-validator";
+import { Exclude, Transform, TransformFnParams, Type } from "class-transformer";
+import { CreateRecordDTO } from '../../record/dto/create-record.dto';
+import { CreateAchievementDTO } from '../../achievement/dto/create-achievement.dto';
+import { ApiProperty } from "@nestjs/swagger";
 
-export class UserDTO {
-  @IsInt()
+export class CreateUserDTO {
+  @ApiProperty()
   id: number;
 
+  @ApiProperty({required: true})
   @IsString()
+  @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
   name: string;
 
-  @ArrayNotEmpty()
+  @ApiProperty({required: false, default: []})
   @ValidateNested({ each: true })
-  @Type(() => RecordDTO)
-  records: RecordDTO[];
+  @Type(() => CreateRecordDTO)
+  records: CreateRecordDTO[];
 
-  @ArrayNotEmpty()
+  @ApiProperty({required: false, default: []})
   @ValidateNested({ each: true })
-  @Type(() => AchievementDTO)
-  achievements: AchievementDTO[];
+  @Type(() => CreateAchievementDTO)
+  achievements: CreateAchievementDTO[];
 
-  @IsDate()
+  @ApiProperty({required: true, default: "example@gmail.com"})
+  @IsEmail()
+  email: string
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(4)
+  @ApiProperty()
+  password: string
+
+  @ApiProperty({required: false})
   registerDate: Date;
 }

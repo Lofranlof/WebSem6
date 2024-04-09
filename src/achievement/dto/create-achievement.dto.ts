@@ -1,27 +1,26 @@
 import { IsInt, IsDate, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UserDTO } from '../../user/dto/create-user.dto';
-import { TypeDTO } from '../../type/dto/create-type.dto';
+import { CreateUserDTO } from '../../user/dto/create-user.dto';
+import { CreateTypeDTO } from '../../type/dto/create-type.dto';
 
-export class AchievementDTO {
+export class CreateAchievementDTO {
   @IsInt()
   id: number;
 
   @IsOptional()
-  @ValidateNested()
-  @Type(() => UserDTO)
-  author?: UserDTO;
+  @Type(() => CreateUserDTO)
+  author?: CreateUserDTO;
 
   @IsOptional()
   @IsInt()
   authorId?: number;
 
   @IsDate()
+  @IsOptional()
   achievedAt: Date;
 
-  @ValidateNested()
-  @Type(() => TypeDTO)
-  type: TypeDTO;
+  @Type(() => CreateTypeDTO)
+  type: CreateTypeDTO;
 
   @IsInt()
   typeID: number;

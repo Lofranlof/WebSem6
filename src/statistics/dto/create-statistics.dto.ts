@@ -1,11 +1,11 @@
 import { IsInt } from 'class-validator';
+import { RecordDTO } from "../../record/dto/create-record.dto";
 
-export class StatisticsDTO {
+export class CreateStatisticsDTO {
   @IsInt()
   id: number;
 
-  @IsInt()
-  recordId: number;
+  record: RecordDTO;
 
   @IsInt()
   benchPress: number;

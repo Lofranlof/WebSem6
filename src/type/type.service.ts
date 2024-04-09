@@ -1,25 +1,46 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { TypeDTO } from './dto/create-type.dto';
+import { CreateTypeDTO } from "./dto/create-type.dto";
+import { UpdateTypeDTO } from "./dto/update-type.dto"
+import { PrismaService } from "../prisma/prisma.service";
+import { Prisma } from "@prisma/client";
+
 
 @Injectable()
 export class TypeService {
-  getAllTypes() {
-    throw new NotImplementedException();
+  constructor(private prisma: PrismaService) {}
+
+  getAllTypes(offset: number, limit: number) {
+    return this.prisma.type.findMany({
+      take: limit,
+      skip: offset,
+    });
   }
 
-  getTypeByName(name: string) {
-    throw new NotImplementedException(name);
+  getTypeById(id: number) {
+    return this.prisma.type.findUnique({ where: {id} });
   }
 
-  createType(type: TypeDTO) {
-    throw new NotImplementedException(type);
+  createType(createTypeDTO: CreateTypeDTO) {
+    const typeData: Prisma.TypeCreateInput = {
+      title: createTypeDTO.title,
+      achievement: createTypeDTO.achievement ? {
+      } : undefined,
+    }
+
+    return this.prisma.type.create({ data: typeData });
   }
 
-  deleteType(name: string) {
-    throw new NotImplementedException(name);
+  deleteType(id: number) {
+    return this.prisma.type.delete({ where: {id} });
   }
 
-  updateType(type: TypeDTO) {
-    throw new NotImplementedException((type))
+  updateType(id: number, updateTypeDTO: UpdateTypeDTO) {
+    const typeData: Prisma.TypeCreateInput = {
+      title: updateTypeDTO.title,
+      achievement: updateTypeDTO.achievement ? {
+      } : undefined,
+    }
+
+    return this.prisma.type.create({ data: typeData });
   }
 }

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
-import { StatisticsDTO } from './dto/create-statistics.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { CreateStatisticsDTO } from "./dto/create-statistics.dto";
 
 @ApiBearerAuth()
 @ApiTags('statistics')
@@ -17,6 +17,10 @@ export default class TypeController {
   @ApiResponse({
     status: 403,
     description: "Forbidden."
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad request"
   })
   @ApiResponse({
     status: 500,
@@ -39,11 +43,15 @@ export default class TypeController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Post('record/:id')
-  async createStatisticsOfRecord(@Body() statistics: StatisticsDTO, id: number){
+  async createStatisticsOfRecord(@Body() statistics: CreateStatisticsDTO, id: number){
     return this.statisticsService.createStatisticsOfRecord(statistics, id);
   }
 
@@ -56,6 +64,10 @@ export default class TypeController {
   @ApiResponse({
     status: 403,
     description: "Forbidden."
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad request"
   })
   @ApiResponse({
     status: 500,

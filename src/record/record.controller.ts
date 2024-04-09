@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { RecordService } from './record.service';
-import { RecordDTO } from './dto/create-record.dto';
+import { CreateRecordDTO } from './dto/create-record.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiBearerAuth()
@@ -17,6 +17,10 @@ export default class RecordController {
   @ApiResponse({
     status: 403,
     description: "Forbidden."
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad request"
   })
   @ApiResponse({
     status: 500,
@@ -38,11 +42,15 @@ export default class RecordController {
     description: "Forbidden."
   })
   @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
     status: 500,
     description: "Internal error"
   })
   @Post('user/:id')
-  async createRecord(@Body() record: RecordDTO) {
+  async createRecord(@Body() record: CreateRecordDTO) {
     return this.recordService.createRecord(record);
   }
 
@@ -55,6 +63,10 @@ export default class RecordController {
   @ApiResponse({
     status: 403,
     description: "Forbidden."
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad request"
   })
   @ApiResponse({
     status: 500,
