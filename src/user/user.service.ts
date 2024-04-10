@@ -26,7 +26,6 @@ export class UserService {
       records: createUserDTO.records ? {
         create: createUserDTO.records.map(record => ({
           title: record.title,
-          content: record.content,
           author: record.author
         }))
       } : undefined,
@@ -54,7 +53,6 @@ export class UserService {
       records: updateUserDTO.records ? {
         create: updateUserDTO.records.map(record => ({
           title: record.title,
-          content: record.content,
           author: record.author
         }))
       } : undefined,

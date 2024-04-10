@@ -1,6 +1,6 @@
 import { IsInt, IsString, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { AchievementDTO } from '../../achievement/dto/create-achievement.dto';
+import { CreateAchievementDTO } from '../../achievement/dto/create-achievement.dto';
 
 export class CreateTypeDTO {
   @IsInt()
@@ -11,6 +11,6 @@ export class CreateTypeDTO {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => AchievementDTO)
-  achievement: AchievementDTO;
+  @Type(() => CreateAchievementDTO)
+  achievement: CreateAchievementDTO;
 }
