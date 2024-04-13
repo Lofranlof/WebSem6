@@ -8,7 +8,7 @@ import {
   Patch,
   Query,
   ParseIntPipe,
-  BadRequestException
+  BadRequestException, NotFoundException
 } from "@nestjs/common";
 import { TypeService } from './type.service';
 import { CreateTypeDTO } from './dto/create-type.dto';
@@ -45,12 +45,12 @@ export default class TypeController {
   })
   @Get()
   async getAllTypes(@Query() { offset, limit }: PaginationParamsDto) {
-    if (offset > this.MAX_INT32 || offset <= 0 || limit > this.MAX_INT32 || limit <= 0) {
-      throw new BadRequestException(`ID ${offset} or ${limit} is either too large or too small.`);
+    if (offset > this.MAX_INT32 || offset < 0 || limit > this.MAX_INT32 || limit < 0) {
+      throw new BadRequestException(`${offset} or ${limit} is either too large or too small.`);
     }
     return this.typeService.getAllTypes(offset, limit);
   }
-  @ApiOperation({ summary: "Get type by name" })
+  @ApiOperation({ summary: "Get type by id" })
   @ApiResponse({
     status: 200,
     description: "The Type has been fetched"
@@ -72,7 +72,11 @@ export default class TypeController {
     if (id > this.MAX_INT32 || id <= 0) {
       throw new BadRequestException(`ID ${id} is either too large or too small.`);
     }
-    return this.typeService.getTypeById(id);
+    const type = await this.typeService.getTypeById(id);
+    if (!type) {
+      throw new NotFoundException(`Type with ${id} does not exist!`);
+    }
+    return type;
   }
   @ApiOperation({ summary: "Create a new type" })
   @ApiResponse({

@@ -2,9 +2,10 @@ import { IsInt, IsDate, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateUserDTO } from '../../user/dto/create-user.dto';
 import { CreateTypeDTO } from '../../type/dto/create-type.dto';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateAchievementDTO {
-  @IsInt()
+  @ApiProperty()
   id: number;
 
   @IsOptional()
@@ -15,8 +16,7 @@ export class CreateAchievementDTO {
   @IsInt()
   authorId?: number;
 
-  @IsDate()
-  @IsOptional()
+  @ApiProperty({required: false})
   achievedAt: Date;
 
   @Type(() => CreateTypeDTO)

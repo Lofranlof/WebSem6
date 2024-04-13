@@ -1,12 +1,16 @@
-import { IsInt, IsString, IsOptional, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsInt, IsString, IsOptional, ValidateNested, IsNotEmpty } from "class-validator";
+import { Transform, TransformFnParams, Type } from "class-transformer";
 import { CreateAchievementDTO } from '../../achievement/dto/create-achievement.dto';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateTypeDTO {
-  @IsInt()
+  @ApiProperty()
   id: number;
 
+  @ApiProperty({required: true})
   @IsString()
+  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @IsNotEmpty()
   title: string;
 
   @IsOptional()

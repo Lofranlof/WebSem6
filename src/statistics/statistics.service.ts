@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable, NotFoundException, NotImplementedException } from "@nestjs/common";
 import { CreateStatisticsDTO} from "./dto/create-statistics.dto";
 import { UpdateStatisticsDTO} from "./dto/update-statistics.dto";
 import { PrismaService } from "../prisma/prisma.service";
@@ -18,9 +18,12 @@ export class StatisticsService {
   }
 
   async createStatisticsOfRecord(createStatisticsDTO: CreateStatisticsDTO, id: number) {
-    const statRecord = this.prisma.record.findUnique({where: {id}})
+    const record = await this.prisma.record.findUnique({where: {id}})
+    if (!record) {
+      throw new NotFoundException(`record with ${id} does not exist!`);
+    }
     const statisticsData: Prisma.StatisticsCreateInput = {
-      record: createStatisticsDTO.record ? {}: undefined,
+      record: {connect: {id: record.id}},
       becnhPress: createStatisticsDTO.benchPress,
       squat: createStatisticsDTO.squat,
       deadLift: createStatisticsDTO.deadLift,

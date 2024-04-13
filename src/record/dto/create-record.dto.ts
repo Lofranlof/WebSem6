@@ -4,17 +4,21 @@ import {
   IsBoolean,
   IsOptional,
   IsDate,
-  ValidateNested,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+  ValidateNested, IsNotEmpty
+} from "class-validator";
+import { Transform, TransformFnParams, Type } from "class-transformer";
 import { CreateUserDTO } from '../../user/dto/create-user.dto';
 import { CreateStatisticsDTO } from '../../statistics/dto/create-statistics.dto';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateRecordDTO {
-  @IsInt()
+  @ApiProperty()
   id: number;
 
+  @ApiProperty({required: true, default: "My new record entry"})
   @IsString()
+  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @IsNotEmpty()
   title: string;
 
   @IsOptional()
@@ -26,7 +30,7 @@ export class CreateRecordDTO {
   @IsInt()
   authorId?: number;
 
-  @IsDate()
+  @ApiProperty({required: false})
   createdAt: Date;
 
   @IsOptional()

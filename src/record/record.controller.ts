@@ -1,7 +1,18 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Post, Query
+} from "@nestjs/common";
 import { RecordService } from './record.service';
 import { CreateRecordDTO } from './dto/create-record.dto';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { PaginationParamsDto } from "../common/dto/pagination.dto";
 
 @ApiBearerAuth()
 @ApiTags('record')
@@ -9,6 +20,34 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@ne
 export default class RecordController {
   MAX_INT32 = 2147483647
   constructor(private readonly recordService: RecordService) {}
+
+  @ApiOperation({ summary: "Get all records" })
+  @ApiQuery({ name: 'offset', type: 'number'})
+  @ApiQuery({ name: 'limit', type: 'number'})
+
+  @ApiResponse({
+    status: 200,
+    description: "All users have been fetched"
+  })
+  @ApiResponse({
+    status: 403,
+    description: "Forbidden."
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad request"
+  })
+  @ApiResponse({
+    status: 500,
+    description: "Internal error"
+  })
+  @Get()
+  async getAllRecords(@Query() { offset, limit }: PaginationParamsDto) {
+    if (offset > this.MAX_INT32 || offset < 0 || limit > this.MAX_INT32 || limit < 0) {
+      throw new BadRequestException(`ID ${offset} or ${limit} is either too large or too small.`);
+    }
+    return this.recordService.getAllRecords(offset, limit);
+  }
   @ApiOperation({ summary: "Get a training record by ID" })
   @ApiParam({name: "id", type: "number", required: true})
   @ApiResponse({
@@ -32,7 +71,11 @@ export default class RecordController {
     if (id > this.MAX_INT32 || id <= 0) {
       throw new BadRequestException(`ID ${id} is either too large or too small.`);
     }
-    return this.recordService.getRecordsByID(id);
+    const record = await this.recordService.getRecordsByID(id);
+    if (!record) {
+      throw new NotFoundException(`Record with ${id} does not exist!`);
+    }
+    return record;
   }
 
   @ApiOperation({ summary: "Create new training record of a user" })

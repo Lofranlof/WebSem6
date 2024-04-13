@@ -45,7 +45,7 @@ export default class UserController {
   })
   @Get()
   async getAllUsers(@Query() { offset, limit }: PaginationParamsDto) {
-    if (offset > this.MAX_INT32 || offset <= 0 || limit > this.MAX_INT32 || limit <= 0) {
+    if (offset > this.MAX_INT32 || offset < 0 || limit > this.MAX_INT32 || limit < 0) {
       throw new BadRequestException(`ID ${offset} or ${limit} is either too large or too small.`);
     }
     return this.userService.getAllUsers(offset, limit);

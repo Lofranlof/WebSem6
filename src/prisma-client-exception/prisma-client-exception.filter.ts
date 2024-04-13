@@ -60,6 +60,14 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
         });
         break;
       }
+      case 'P2014': {
+        const status = HttpStatus.BAD_REQUEST;
+        response.status(status).json({
+          statusCode: status,
+          message: message,
+        });
+        break;
+      }
       default:
         // default 500 error code
         super.catch(exception, host);
