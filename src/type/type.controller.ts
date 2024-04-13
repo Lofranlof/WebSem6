@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch, Query, ParseIntPipe } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Patch,
+  Query,
+  ParseIntPipe,
+  BadRequestException
+} from "@nestjs/common";
 import { TypeService } from './type.service';
 import { CreateTypeDTO } from './dto/create-type.dto';
 import { UpdateTypeDTO } from './dto/update-type.dto';
@@ -10,6 +21,8 @@ import { PaginationParamsDto } from "../common/dto/pagination.dto";
 @ApiTags('type')
 @Controller('type')
 export default class TypeController {
+  MAX_INT32 = 2147483647
+
   constructor(private readonly typeService: TypeService) {}
   @ApiOperation({ summary: "Get all types" })
   @ApiQuery({ name: 'offset', type: 'number'})
@@ -31,11 +44,13 @@ export default class TypeController {
     description: "Internal error"
   })
   @Get()
-  getAllTypes(@Query() { offset, limit }: PaginationParamsDto) {
+  async getAllTypes(@Query() { offset, limit }: PaginationParamsDto) {
+    if (offset > this.MAX_INT32 || offset <= 0 || limit > this.MAX_INT32 || limit <= 0) {
+      throw new BadRequestException(`ID ${offset} or ${limit} is either too large or too small.`);
+    }
     return this.typeService.getAllTypes(offset, limit);
   }
   @ApiOperation({ summary: "Get type by name" })
-  @ApiParam({name: "name", type: "string", required: true})
   @ApiResponse({
     status: 200,
     description: "The Type has been fetched"
@@ -53,7 +68,10 @@ export default class TypeController {
     description: "Internal error"
   })
   @Get(':id')
-  getTypeById(@Param('id', ParseIntPipe) id: number) {
+  async getTypeById(@Param('id', ParseIntPipe) id: number) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
     return this.typeService.getTypeById(id);
   }
   @ApiOperation({ summary: "Create a new type" })
@@ -79,7 +97,6 @@ export default class TypeController {
   }
 
   @ApiOperation({ summary: "Update the type" })
-  @ApiParam({name: "name", type: "string", required: true})
   @ApiResponse({
     status: 200,
     description: "The Type has been updated successfully"
@@ -97,12 +114,14 @@ export default class TypeController {
     description: "Internal error"
   })
   @Patch(':id')
-  updateType(@Param('id', ParseIntPipe) id: number, @Body() type: UpdateTypeDTO) {
+  async updateType(@Param('id', ParseIntPipe) id: number, @Body() type: UpdateTypeDTO) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
     return this.typeService.updateType(id, type);
   }
 
   @ApiOperation({ summary: "Delete the type" })
-  @ApiParam({name: "name", type: "string", required: true})
   @ApiResponse({
     status: 200,
     description: "The Type has been deleted successfully"
@@ -121,6 +140,9 @@ export default class TypeController {
   })
   @Delete(':id')
   async deleteType(@Param('id', ParseIntPipe) id: number) {
-    this.typeService.deleteType(id);
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
+    return this.typeService.deleteType(id);
   }
 }

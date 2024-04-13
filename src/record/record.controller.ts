@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from "@nestjs/common";
 import { RecordService } from './record.service';
 import { CreateRecordDTO } from './dto/create-record.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -7,9 +7,10 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@ne
 @ApiTags('record')
 @Controller('record')
 export default class RecordController {
+  MAX_INT32 = 2147483647
   constructor(private readonly recordService: RecordService) {}
   @ApiOperation({ summary: "Get a training record by ID" })
-  @ApiParam({name: "id", type: "integer", required: true})
+  @ApiParam({name: "id", type: "number", required: true})
   @ApiResponse({
     status: 200,
     description: "Training record has been fetched"
@@ -27,7 +28,10 @@ export default class RecordController {
     description: "Internal error"
   })
   @Get(':id')
-  getRecordsByID(@Param('id') id: number) {
+  async getRecordsByID(@Param('id', ParseIntPipe) id: number) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
     return this.recordService.getRecordsByID(id);
   }
 
@@ -50,8 +54,11 @@ export default class RecordController {
     description: "Internal error"
   })
   @Post('user/:id')
-  async createRecord(@Body() record: CreateRecordDTO) {
-    return this.recordService.createRecord(record);
+  async createRecord(@Param('id', ParseIntPipe) id: number, @Body() record: CreateRecordDTO) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
+    return this.recordService.createRecord(id, record);
   }
 
   @ApiOperation({ summary: "Delete the training record" })
@@ -73,7 +80,10 @@ export default class RecordController {
     description: "Internal error"
   })
   @Delete(':id')
-  async deleteRecord(@Param('id') id: number) {
-    this.recordService.deleteRecord(id);
+  async deleteRecord(@Param('id', ParseIntPipe) id: number) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
+    return this.recordService.deleteRecord(id);
   }
 }

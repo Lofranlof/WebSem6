@@ -8,7 +8,7 @@ import { Prisma } from "@prisma/client";
 export class StatisticsService {
   constructor(private prisma: PrismaService) {}
 
-  getStatisticsByID(id: number) {
+  async getStatisticsByID(id: number) {
     return this.prisma.statistics.findUnique({
       where: { id },
       include: {
@@ -17,7 +17,7 @@ export class StatisticsService {
     })
   }
 
-  createStatisticsOfRecord(createStatisticsDTO: CreateStatisticsDTO, id: number) {
+  async createStatisticsOfRecord(createStatisticsDTO: CreateStatisticsDTO, id: number) {
     const statRecord = this.prisma.record.findUnique({where: {id}})
     const statisticsData: Prisma.StatisticsCreateInput = {
       record: createStatisticsDTO.record ? {}: undefined,
@@ -28,7 +28,7 @@ export class StatisticsService {
     return this.prisma.statistics.create({ data: statisticsData });
   }
 
-  deleteStatisticsByID(id: number) {
+  async deleteStatisticsByID(id: number) {
     return this.prisma.statistics.delete({ where: {id} });
   }
 }

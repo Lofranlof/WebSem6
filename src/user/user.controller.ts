@@ -8,7 +8,7 @@ import {
   Patch,
   ParseIntPipe,
   NotFoundException,
-  Query
+  Query, BadRequestException
 } from "@nestjs/common";
 import { UserService } from './user.service';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -20,6 +20,7 @@ import { PaginationParamsDto } from "../common/dto/pagination.dto";
 @ApiTags('users')
 @Controller('user')
 export default class UserController {
+  MAX_INT32 = 2147483647
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: "Get all users" })
@@ -44,6 +45,9 @@ export default class UserController {
   })
   @Get()
   async getAllUsers(@Query() { offset, limit }: PaginationParamsDto) {
+    if (offset > this.MAX_INT32 || offset <= 0 || limit > this.MAX_INT32 || limit <= 0) {
+      throw new BadRequestException(`ID ${offset} or ${limit} is either too large or too small.`);
+    }
     return this.userService.getAllUsers(offset, limit);
   }
 
@@ -70,6 +74,9 @@ export default class UserController {
   })
   @Get(':id')
   async getUserByID(@Param('id', ParseIntPipe) id: number) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
     const user = await this.userService.getUserByID(id);
     if (!user) {
       throw new NotFoundException(`User with ${id} does not exist!`);
@@ -117,6 +124,9 @@ export default class UserController {
   })
   @Patch(':id')
   async updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDTO: UpdateUserDTO) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
     return this.userService.updateUser(id, updateUserDTO);
   }
 
@@ -139,6 +149,9 @@ export default class UserController {
   })
   @Delete(':id')
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
     return this.userService.deleteUser(id);
   }
 }

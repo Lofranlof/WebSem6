@@ -8,33 +8,36 @@ import { UpdateAchievementDTO } from "./dto/update-achievement.dto";
 export class AchievementService {
   constructor(private prisma: PrismaService) {}
 
-  getAllAchievements(offset?: number, limit?: number) {
+  async getAllAchievements(offset?: number, limit?: number) {
     return this.prisma.achievement.findMany({
       take: limit,
       skip: offset,
     });
   }
 
-  getAchievementsByID(id: number) {
+  async getAchievementsByID(id: number) {
     return this.prisma.achievement.findUnique({where: {id}})
   }
 
-  createAchievement(createAchievementDTO: CreateAchievementDTO) {
+  async createAchievement(createAchievementDTO: CreateAchievementDTO) {
     const achievementData: Prisma.AchievementCreateInput = {
       author: createAchievementDTO.author ? {} : undefined,
       type: createAchievementDTO.type ? {} : undefined,
     }
     return this.prisma.achievement.create({ data: achievementData });  }
 
-  deleteAchievement(id: number) {
-    return this.prisma.achievement.delete({where: {id}})
+  async deleteAchievement(id: number) {
+    return this.prisma.achievement.delete({where: {id} })
   }
 
-  updateAchievement(updateAchievementDTO: UpdateAchievementDTO) {
+  async updateAchievement(id: number, updateAchievementDTO: UpdateAchievementDTO) {
     const achievementData: Prisma.AchievementCreateInput = {
       author: updateAchievementDTO.author ? {} : undefined,
       type: updateAchievementDTO.type ? {} : undefined,
     }
-    return this.prisma.achievement.create({ data: achievementData });
+    return this.prisma.achievement.update({
+      where: { id },
+      data: achievementData,
+    });
   }
 }

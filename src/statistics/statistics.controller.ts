@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { StatisticsService } from './statistics.service';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateStatisticsDTO } from "./dto/create-statistics.dto";
@@ -7,6 +7,7 @@ import { CreateStatisticsDTO } from "./dto/create-statistics.dto";
 @ApiTags('statistics')
 @Controller('statistics')
 export default class TypeController {
+  MAX_INT32 = 2147483647
   constructor(private readonly statisticsService: StatisticsService) {}
   @ApiOperation({ summary: "Get a statistics entry by ID" })
   @ApiParam({name: "id", type: "integer", required: true})
@@ -27,13 +28,15 @@ export default class TypeController {
     description: "Internal error"
   })
   @Get(':id')
-  getStatisticsByID(@Param('id') id: number) {
+  async getStatisticsByID(@Param('id') id: number) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
     return this.statisticsService.getStatisticsByID(id);
   }
 
   @ApiOperation({ summary: "Create a statistics entry of a training record" })
   @ApiParam({name: "id", type: "integer", required: true})
-  @ApiParam({name: 'record', type: 'number'})
   @ApiResponse({
     status: 201,
     description: "Statistics entry has been created successfully"
@@ -52,6 +55,9 @@ export default class TypeController {
   })
   @Post('record/:id')
   async createStatisticsOfRecord(@Body() statistics: CreateStatisticsDTO, id: number){
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
     return this.statisticsService.createStatisticsOfRecord(statistics, id);
   }
 
@@ -75,6 +81,9 @@ export default class TypeController {
   })
   @Delete(':id')
   async deleteStatisticsByID(@Param('id') id: number) {
-    this.statisticsService.deleteStatisticsByID(id);
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
+    return this.statisticsService.deleteStatisticsByID(id);
   }
 }

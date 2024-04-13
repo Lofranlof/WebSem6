@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Patch,
+  Query,
+  ParseIntPipe,
+  NotFoundException, BadRequestException
+} from "@nestjs/common";
 import { AchievementService } from './achievement.service';
 import { CreateAchievementDTO } from './dto/create-achievement.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -9,6 +20,7 @@ import { UpdateAchievementDTO } from "./dto/update-achievement.dto";
 @ApiTags('achievement')
 @Controller('achievement')
 export default class AchievementController {
+  MAX_INT32 = 2147483647
   constructor(private readonly achievementService: AchievementService) {}
   @ApiOperation({ summary: "Get all achievements" })
   @ApiQuery({ name: 'offset', type: 'number'})
@@ -30,12 +42,16 @@ export default class AchievementController {
     description: "Internal error"
   })
   @Get()
-  getAllAchievements(@Query() { offset, limit }: PaginationParamsDto) {
-    return this.achievementService.getAllAchievements();
+  async getAllAchievements(@Query() { offset, limit }: PaginationParamsDto) {
+    if (offset > this.MAX_INT32 || offset <= 0 || limit > this.MAX_INT32 || limit <= 0) {
+      throw new BadRequestException(`ID ${offset} or ${limit} is either too large or too small.`);
+    }
+
+    return this.achievementService.getAllAchievements(offset, limit);
   }
 
   @ApiOperation({ summary: "Get an achievement by ID" })
-  @ApiParam({name: "id", type: "integer", required: true})
+  @ApiParam({name: "id", type: "number", required: true})
   @ApiResponse({
     status: 200,
     description: "The achievement has been fetched"
@@ -53,8 +69,15 @@ export default class AchievementController {
     description: "Internal error"
   })
   @Get(':id')
-  getAchievementByID(@Param('id') id: number) {
-    return this.achievementService.getAchievementsByID(id);
+  async getAchievementByID(@Param('id', ParseIntPipe) id: number) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
+    const achievement = await this.achievementService.getAchievementsByID(id);
+    if (!achievement) {
+      throw new NotFoundException(`User with ${id} does not exist!`);
+    }
+    return achievement
   }
 
   @ApiOperation({ summary: "Create an achievement" })
@@ -98,8 +121,11 @@ export default class AchievementController {
     description: "Internal error"
   })
   @Patch(':id')
-  updateAchievement(@Body() achievement: UpdateAchievementDTO) {
-    return this.achievementService.updateAchievement(achievement)
+  async updateAchievement(@Param('id', ParseIntPipe) id: number,@Body() achievement: UpdateAchievementDTO) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
+    return this.achievementService.updateAchievement(id, achievement)
   }
 
   @ApiOperation({ summary: "Delete an achievement" })
@@ -121,7 +147,10 @@ export default class AchievementController {
     description: "Internal error"
   })
   @Delete(':id')
-  async deleteAchievement(@Param('id') id: number) {
-    this.achievementService.deleteAchievement(id);
+  async deleteAchievement(@Param('id', ParseIntPipe) id: number) {
+    if (id > this.MAX_INT32 || id <= 0) {
+      throw new BadRequestException(`ID ${id} is either too large or too small.`);
+    }
+    return this.achievementService.deleteAchievement(id);
   }
 }
