@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -12,6 +12,7 @@ import { RecordModule } from '../record/record.module';
 import { StatisticsModule } from '../statistics/statistics.module';
 import { TypeModule } from '../type/type.module';
 import { PrismaModule } from "../prisma/prisma.module";
+import { AuthMiddleware } from 'src/auth/auth-middleware';
 
 @Module({
   imports: [
@@ -35,4 +36,13 @@ import { PrismaModule } from "../prisma/prisma.module";
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes(
+      { path: '/profile', method: RequestMethod.ALL },
+      { path: '/scoreboard', method: RequestMethod.ALL },
+      { path: '/achievements', method: RequestMethod.ALL },
+      { path: '/resources', method: RequestMethod.ALL },
+      { path: '/todo', method: RequestMethod.ALL });
+  }
+}

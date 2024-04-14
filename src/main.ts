@@ -7,7 +7,9 @@ import { LoggingInterceptor } from './app/app.interceptors';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ClassSerializerInterceptor, ValidationPipe} from '@nestjs/common'
 import { PrismaClientExceptionFilter } from './prisma-client-exception/prisma-client-exception.filter';
-
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
+import * as process from 'process';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(join(__dirname, '..', 'public'));
@@ -33,6 +35,14 @@ async function bootstrap() {
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  app.use(
+    session({
+      secret: process.env.SESSION_KEY,
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
+  app.use(cookieParser());
   await app.listen(process.env.PORT || 34918);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

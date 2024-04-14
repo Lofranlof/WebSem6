@@ -13,9 +13,11 @@ export class LoggingInterceptor implements NestInterceptor {
     const now = Date.now();
     return next.handle().pipe(
       tap(() => {
-        const elapsed = Date.now() - now;
-        const res = context.switchToHttp().getResponse();
-        res.header('Server-Timing', `serverdur=${elapsed}`);
+        if (!context.switchToHttp().getResponse().finished) {
+          const elapsed = Date.now() - now;
+          const response = context.switchToHttp().getResponse();
+          response.header('Server-Timing', `serverdur=${elapsed}`);
+        }
       }),
     );
   }
