@@ -24,9 +24,12 @@
     "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^10.3.3",
     "@nestjs/platform-express": "^10.3.3",
+    "@nestjs/platform-socket.io": "^10.3.7",
     "@nestjs/serve-static": "^4.0.1",
     "@nestjs/swagger": "^7.3.0",
+    "@nestjs/websockets": "^10.3.7",
     "@prisma/client": "^5.12.1",
+    "@types/socket.io": "^3.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "const-max-int32": "^1.0.2",
@@ -39,7 +42,8 @@
     "pg": "^8.11.3",
     "prisma-pagination": "^0.2.3",
     "reflect-metadata": "^0.2.1",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "socket.io": "^4.7.5"
   },
   "engines": {
     "node": ">=20.11.0"

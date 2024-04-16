@@ -3,10 +3,7 @@
     {{> styleMetaTitle}}
   </head>
 
-  <body>
-
     {{> header }}
-
     <main class="body">
       <h2 class="body__section__title">YouTube Channels</h2>
       <ul class="body__list">
@@ -14,10 +11,18 @@
         <li class="body__list__item"><a href="https://www.youtube.com/@sam_sulek">Sam Sulek (for the memes)</a></li>
         <li class="body__list__item"><a href="https://www.youtube.com/@BaldOmniMan">Bald Omni-Man</a></li>
       </ul>
+      <div class="chat-message" id="chat-container-message">
+        <h2>Chat</h2>
+      </div>
+      <div class="chat-container" id="chatContainer" style="display: block">
+        <input type="text" class="message-input"  id="messageInput" placeholder="Enter your message">
+        <button onclick="sendMessage()" class="chat-button">Отправить</button>
+      </div>
     </main>
 
     <footer>
       {{> timeToLoad }}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
+      <script src="JS/socket.js"></script>
     </footer>
 
-  </body>

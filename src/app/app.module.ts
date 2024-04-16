@@ -13,6 +13,7 @@ import { StatisticsModule } from '../statistics/statistics.module';
 import { TypeModule } from '../type/type.module';
 import { PrismaModule } from "../prisma/prisma.module";
 import { AuthMiddleware } from 'src/auth/auth-middleware';
+import { ChatModule } from "../websocket/websocket.module";
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { AuthMiddleware } from 'src/auth/auth-middleware';
     RecordModule,
     StatisticsModule,
     TypeModule,
-    PrismaModule
+    PrismaModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [
@@ -42,7 +44,6 @@ export class AppModule implements NestModule {
       { path: '/profile', method: RequestMethod.ALL },
       { path: '/scoreboard', method: RequestMethod.ALL },
       { path: '/achievements', method: RequestMethod.ALL },
-      { path: '/resources', method: RequestMethod.ALL },
       { path: '/todo', method: RequestMethod.ALL });
   }
 }
